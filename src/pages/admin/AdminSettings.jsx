@@ -56,7 +56,7 @@ const AdminSettings = () => {
       <div className="p-6 md:p-8 rounded-2xl bg-[#141414] border border-white/10 shadow-lg space-y-6">
         <h2 className="text-base font-bold text-white">Administrator Account</h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="p-4 rounded-xl bg-black/40 border border-white/5 space-y-1">
             <span className="text-[10px] uppercase font-mono tracking-wider text-white/40 font-bold">
               Email Address
@@ -66,11 +66,30 @@ const AdminSettings = () => {
 
           <div className="p-4 rounded-xl bg-black/40 border border-white/5 space-y-1">
             <span className="text-[10px] uppercase font-mono tracking-wider text-white/40 font-bold">
+              Sign-In Provider
+            </span>
+            <p className="text-sm font-semibold text-white truncate flex items-center gap-1.5">
+              {user?.providerData?.[0]?.providerId === 'google.com' ? (
+                <>
+                  <span className="text-blue-400">Google</span>
+                  <span className="text-xs text-white/40 font-mono">(google.com)</span>
+                </>
+              ) : (
+                <>
+                  <span className="text-white">Email & Password</span>
+                  <span className="text-xs text-white/40 font-mono">(password)</span>
+                </>
+              )}
+            </p>
+          </div>
+
+          <div className="p-4 rounded-xl bg-black/40 border border-white/5 space-y-1">
+            <span className="text-[10px] uppercase font-mono tracking-wider text-white/40 font-bold">
               Account Status
             </span>
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-              <p className="text-sm font-semibold text-green-400">Authenticated Administrator</p>
+              <p className="text-sm font-semibold text-green-400">Authorized Admin</p>
             </div>
           </div>
         </div>
@@ -79,9 +98,9 @@ const AdminSettings = () => {
         <div className="p-4 rounded-xl bg-black/40 border border-white/5 space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-[10px] uppercase font-mono tracking-wider text-white/40 font-bold">
-              Your Firebase Admin UID
+              Your Firebase Auth UID
             </span>
-            <span className="text-[11px] text-red-400 font-medium">Use in firestore.rules & storage.rules</span>
+            <span className="text-[11px] text-red-400 font-medium">Use in firestore.rules & .env.local</span>
           </div>
           <div className="flex items-center gap-3">
             <code className="flex-1 px-3 py-2 rounded-lg bg-white/5 text-xs font-mono text-white/90 truncate border border-white/10">

@@ -1,5 +1,12 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { loginAdmin, logoutAdmin, onAuthChange } from '../firebase/auth';
+import {
+  loginAdmin,
+  loginWithGoogle,
+  logoutAdmin,
+  onAuthChange,
+  isAuthorizedAdmin,
+  getAdminUid,
+} from '../firebase/auth';
 
 const AuthContext = createContext(null);
 
@@ -9,7 +16,17 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthChange((currentUser) => {
-      setUser(currentUser);
+      if (currentUser) {
+        if (isAuthorizedAdmin(currentUser)) {
+          setUser(currentUser);
+        } else {
+          // If a logged-in user is not authorized, sign them out safely
+          logoutAdmin();
+          setUser(null);
+        }
+      } else {
+        setUser(null);
+      }
       setLoading(false);
     });
 
@@ -22,13 +39,29 @@ export const AuthProvider = ({ children }) => {
     return loggedInUser;
   };
 
+  const loginGoogle = async () => {
+    const loggedInUser = await loginWithGoogle();
+    setUser(loggedInUser);
+    return loggedInUser;
+  };
+
   const logout = async () => {
     await logoutAdmin();
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, isAuthenticated: Boolean(user) }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        login,
+        loginGoogle,
+        logout,
+        isAuthenticated: Boolean(user && isAuthorizedAdmin(user)),
+        configuredAdminUid: getAdminUid(),
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
