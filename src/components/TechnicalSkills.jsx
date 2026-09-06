@@ -1,5 +1,5 @@
 import React from 'react';
-import { technicalSkills } from '../data/portfolioData';
+import { usePortfolioData } from '../context/PortfolioContext';
 
 const SkillProgress = ({ name, level }) => (
   <div className="mb-4">
@@ -34,6 +34,8 @@ const SkillCard = ({ category, index }) => (
 );
 
 const TechnicalSkills = () => {
+  const { skillsCategories } = usePortfolioData();
+
   return (
     <section id="skills" className="bg-[#0a0a0a] pt-24 pb-28 px-6 md:px-12 w-full relative overflow-hidden font-sans">
       {/* Background visual elements */}
@@ -57,7 +59,7 @@ const TechnicalSkills = () => {
 
         {/* Skills Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {technicalSkills.categories.map((category, index) => (
+          {skillsCategories.map((category, index) => (
             <SkillCard key={category.title} category={category} index={index} />
           ))}
         </div>

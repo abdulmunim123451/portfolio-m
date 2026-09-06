@@ -1,0 +1,52 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ===============================================================
+    // ADMIN AUTHORIZATION HELPER
+    // By default, any authenticated Firebase user has admin write access
+    // (since only the owner can create users in Firebase Console).
+    // For single-admin lockdown, replace with:
+    // return request.auth != null && request.auth.uid == 'YOUR_ADMIN_UID_HERE';
+    // ===============================================================
+    function isAdmin() {
+      return request.auth != null;
+    }
+
+    // Projects collection
+    match /projects/{projectId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Skills collection
+    match /skills/{skillId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Profile document (e.g. profile/main)
+    match /profile/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Experience / Internships collection
+    match /experience/{expId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Certificates collection
+    match /certificates/{certId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Resume document (e.g. resume/main)
+    match /resume/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 import stackImage from '../assets/about/yusuf-avatar.png';
 import { aboutContent, education } from '../data/portfolioData';
+import { usePortfolioData } from '../context/PortfolioContext';
 
 // Tech stack SVG icons rendered inline for crisp rendering
 const JavaIcon = () => (
@@ -44,6 +45,11 @@ const MernIcon = () => (
 );
 
 const About = () => {
+  const { profile } = usePortfolioData();
+  const avatarSrc = profile?.profileImageUrl || stackImage;
+  const bioHtml = profile?.aboutDescription || aboutContent.bio;
+  const headingText = profile?.aboutHeading || aboutContent.heading;
+
   return (
     <section id="about" className="bg-[#ff2a2a] pt-20 pb-40 px-6 md:px-12 w-full relative overflow-hidden font-sans">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-16 items-start">
@@ -66,7 +72,7 @@ const About = () => {
               {/* Image Container */}
               <div className="w-full aspect-[3/4] overflow-hidden rounded-xl bg-gray-800 border-2 border-transparent">
                 <img 
-                  src={stackImage} 
+                  src={avatarSrc} 
                   alt="Abdul Munim — Full Stack & Java Developer" 
                   className="w-full h-full object-cover object-top"
                 />
@@ -79,10 +85,10 @@ const About = () => {
         {/* Right Side: Info Content */}
         <div data-aos="fade-left" data-aos-delay="200" className="flex-1 text-white mt-8 md:mt-0 relative z-20">
           
-          <h2 className="text-4xl md:text-5xl font-black text-black mb-4">{aboutContent.heading}</h2>
+          <h2 className="text-4xl md:text-5xl font-black text-black mb-4">{headingText}</h2>
           <p 
             className="text-lg font-bold mb-8 leading-relaxed max-w-3xl text-red-50"
-            dangerouslySetInnerHTML={{ __html: aboutContent.bio }}
+            dangerouslySetInnerHTML={{ __html: bioHtml }}
           />
 
           {/* Education Highlight Card */}

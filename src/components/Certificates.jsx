@@ -1,5 +1,6 @@
 import React from 'react';
-import { certificates } from '../data/portfolioData';
+import { certificates as staticCerts } from '../data/portfolioData';
+import { usePortfolioData } from '../context/PortfolioContext';
 
 const CertificateCard = ({ cert, aosDelay }) => (
   <div 
@@ -22,6 +23,8 @@ const CertificateCard = ({ cert, aosDelay }) => (
 );
 
 const Certificates = () => {
+  const { certificatesList } = usePortfolioData();
+
   return (
     <section className="bg-[#ff2a2a] pt-20 pb-28 px-6 md:px-12 w-full relative overflow-hidden font-sans">
       
@@ -45,9 +48,9 @@ const Certificates = () => {
 
         {/* Certificate Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-12">
-          {certificates.featured.map((cert, index) => (
+          {certificatesList.map((cert, index) => (
             <CertificateCard 
-              key={cert.name} 
+              key={cert.name + index} 
               cert={cert} 
               aosDelay={String((index + 1) * 100)} 
             />
@@ -57,7 +60,7 @@ const Certificates = () => {
         {/* View All Certificates CTA */}
         <div data-aos="fade-up" data-aos-delay="700" className="flex justify-center">
           <a
-            href={certificates.viewAllUrl}
+            href={staticCerts.viewAllUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-3 px-8 py-3.5 rounded-full bg-white text-black font-bold text-base hover:bg-gray-100 hover:scale-105 hover:shadow-[0_10px_30px_rgba(0,0,0,0.2)] transition-all duration-300 group"

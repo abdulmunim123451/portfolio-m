@@ -1,7 +1,13 @@
 import React from 'react';
 import { personalInfo, socialLinks, footerContent } from '../data/portfolioData';
+import { usePortfolioData } from '../context/PortfolioContext';
 
 const Footer = () => {
+  const { profile } = usePortfolioData();
+  const brandName = profile?.brandName || personalInfo.brandName;
+  const emailContact = profile?.email || personalInfo.emails.primary;
+  const instagramLink = profile?.instagramUrl || socialLinks.instagram;
+
   return (
     <footer className="bg-[#111111] text-[#d4d4d4] py-16 px-6 md:px-12 w-full font-mono text-[10px] md:text-xs tracking-widest flex flex-col justify-between min-h-[50vh]">
       
@@ -27,7 +33,7 @@ const Footer = () => {
       {/* Middle Huge Text */}
       <div className="w-full flex justify-center items-center py-20 md:py-24 overflow-hidden">
         <h2 className="text-[18vw] md:text-[16vw] leading-none font-sans font-bold tracking-tighter lowercase select-none text-[#f4f4f4] w-full text-center">
-          {personalInfo.brandName.toLowerCase()}
+          {brandName.toLowerCase()}
         </h2>
       </div>
 
@@ -41,14 +47,14 @@ const Footer = () => {
         </div>
         
         <div className="flex flex-col gap-3 md:items-center">
-          <a href={`mailto:${personalInfo.emails.primary}`} className="underline hover:text-white transition-colors underline-offset-4 decoration-1 lowercase">
-            {personalInfo.emails.primary}
+          <a href={`mailto:${emailContact}`} className="underline hover:text-white transition-colors underline-offset-4 decoration-1 lowercase">
+            {emailContact}
           </a>
           {/* Social Links */}
           <div className="flex items-center gap-4 mt-2">
             {/* Instagram */}
             <a 
-              href={socialLinks.instagram}
+              href={instagramLink}
               target="_blank"
               rel="noopener noreferrer"
               className="text-[#d4d4d4] hover:text-[#ff2a2a] transition-colors duration-300"
@@ -63,7 +69,7 @@ const Footer = () => {
         
         <div className="flex flex-col gap-1 md:items-end">
           <a 
-            href={socialLinks.instagram}
+            href={instagramLink}
             target="_blank"
             rel="noopener noreferrer"
             className="underline hover:text-white transition-colors underline-offset-4 decoration-1"

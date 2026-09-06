@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { personalInfo } from '../data/portfolioData';
+import { usePortfolioData } from '../context/PortfolioContext';
 
 const Navbar = () => {
+  const { profile } = usePortfolioData();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -20,7 +22,9 @@ const Navbar = () => {
 
   const navLinks = ['Home', 'About', 'Skills', 'Projects', 'Contact'];
 
-  const hireMeMailto = `mailto:${personalInfo.emails.primary}?subject=Hiring Inquiry – Portfolio&body=Hello Abdul Munim,%0D%0A%0D%0AI came across your portfolio and would like to discuss an opportunity with you.%0D%0A%0D%0ALooking forward to hearing from you.%0D%0ABest Regards,`;
+  const emailContact = profile?.email || personalInfo.emails.primary;
+  const brandName = profile?.brandName || personalInfo.brandName;
+  const hireMeMailto = `mailto:${emailContact}?subject=Hiring Inquiry – Portfolio&body=Hello ${brandName},%0D%0A%0D%0AI came across your portfolio and would like to discuss an opportunity with you.%0D%0A%0D%0ALooking forward to hearing from you.%0D%0ABest Regards,`;
 
   return (
     <nav 
@@ -37,7 +41,7 @@ const Navbar = () => {
         {/* Left Side: Logo/Name */}
         <div className="flex items-center">
           <a href="#" className="text-white text-2xl font-black tracking-tight whitespace-nowrap">
-            {personalInfo.brandName}<span className="text-red-500">.</span>
+            {brandName}<span className="text-red-500">.</span>
           </a>
         </div>
 

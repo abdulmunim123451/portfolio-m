@@ -1,5 +1,5 @@
 import React from 'react';
-import { internshipsList } from '../data/portfolioData';
+import { usePortfolioData } from '../context/PortfolioContext';
 
 const InternshipCard = ({ intern, index }) => (
   <div 
@@ -52,6 +52,8 @@ const InternshipCard = ({ intern, index }) => (
 );
 
 const Internships = () => {
+  const { experienceList } = usePortfolioData();
+
   return (
     <section className="bg-[#ff2a2a] pt-24 pb-32 px-6 md:px-12 w-full relative overflow-hidden font-sans">
       
@@ -76,8 +78,8 @@ const Internships = () => {
 
         {/* Internship Cards Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
-          {internshipsList.map((intern, index) => (
-            <InternshipCard key={intern.organization} intern={intern} index={index} />
+          {experienceList.map((intern, index) => (
+            <InternshipCard key={intern.organization + index} intern={intern} index={index} />
           ))}
         </div>
 

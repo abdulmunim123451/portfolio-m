@@ -1,0 +1,70 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // ===============================================================
+    // ADMIN AUTHORIZATION HELPER
+    // Replace 'YOUR_ADMIN_UID_HERE' with your real Firebase Auth UID.
+    // You can copy your UID with one click from /admin/settings!
+    // ===============================================================
+    function isAdmin() {
+      return request.auth != null && (
+        request.auth.uid == 'YOUR_ADMIN_UID_HERE' ||
+        request.auth.token.admin == true
+      );
+    }
+
+    // Projects images
+    match /projects/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin()
+                   && request.resource.contentType.matches('image/.*')
+                   && request.resource.size < 10 * 1024 * 1024;
+      allow delete: if isAdmin();
+    }
+
+    // Skills icons (images or SVG)
+    match /skills/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin()
+                   && (request.resource.contentType.matches('image/.*') || request.resource.contentType == 'image/svg+xml')
+                   && request.resource.size < 5 * 1024 * 1024;
+      allow delete: if isAdmin();
+    }
+
+    // Profile avatar images
+    match /profile/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin()
+                   && request.resource.contentType.matches('image/.*')
+                   && request.resource.size < 10 * 1024 * 1024;
+      allow delete: if isAdmin();
+    }
+
+    // Certificate images
+    match /certificates/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin()
+                   && (request.resource.contentType.matches('image/.*') || request.resource.contentType == 'application/pdf')
+                   && request.resource.size < 15 * 1024 * 1024;
+      allow delete: if isAdmin();
+    }
+
+    // Resume (strictly PDF only)
+    match /resumes/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin()
+                   && request.resource.contentType == 'application/pdf'
+                   && request.resource.size < 20 * 1024 * 1024;
+      allow delete: if isAdmin();
+    }
+
+    match /resume/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin()
+                   && request.resource.contentType == 'application/pdf'
+                   && request.resource.size < 20 * 1024 * 1024;
+      allow delete: if isAdmin();
+    }
+  }
+}
